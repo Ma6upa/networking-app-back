@@ -1,0 +1,16 @@
+{
+  "name": "networking-app",
+  "version": "1.0.0",
+  "description": "Small networking application with functioning front-end and back-end",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mern",
+    "networking",
+    "Ma6upa"
+  ],
+  "author": "Valeriy Yudintsev <yuvalerka@mail.ru>",
+  "license": "ISC"
+}
