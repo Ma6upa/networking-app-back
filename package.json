@@ -12,5 +12,9 @@
     "Ma6upa"
   ],
   "author": "Valeriy Yudintsev <yuvalerka@mail.ru>",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.1.0"
+  }
 }
