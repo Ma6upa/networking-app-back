@@ -10,12 +10,30 @@ const schema = new Schema({
     type: String,
     required: true
   },
-  links: [
-    {
-      type: Types.ObjectId,
-      ref: 'Link'
-    }
-  ]
+  pathToUserpic: {
+    type: String,
+    required: false
+  },
+  name: {
+    type: String,
+    required: false
+  },
+  lastName: {
+    type: String,
+    required: false
+  },
+  birthDate: {
+    type: String,
+    required: false
+  },
+  city: {
+    type: String,
+    required: false
+  },
+  university: {
+    type: String,
+    required: false
+  },
 })
 
 module.exports = model('User', schema)
