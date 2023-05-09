@@ -5,6 +5,21 @@ const config = require('config')
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
 const router = Router()
+const path = require('path')
+const multer = require('multer')
+
+let fileName;
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'images')
+  },
+  filename: (req, file, cb) => {
+    cb(null, fileName + path.extname(file.originalname))
+  }
+})
+
+const upload = multer({storage: storage})
 
 router.post(
   '/register',
@@ -23,7 +38,7 @@ router.post(
         })
       }
 
-      const { email, password } = req.body
+      const { email, password, firstName, lastName, birthDate, city, university } = req.body
       const candidate = await User.findOne({ email })
 
       if (candidate) {
@@ -31,14 +46,31 @@ router.post(
       }
 
       const hashedPassword = await bcrypt.hash(password, 12)
-      const user = new User({ email, password: hashedPassword })
+      fileName = Date.now()
+      const user = new User({ 
+        email, 
+        password: hashedPassword,
+        pathToUserpic: fileName,
+        firstName,
+        lastName,
+        birthDate,
+        city,
+        university,
+
+      })
       await user.save()
 
       res.status(201).json({ message: 'Пользователь создан' })
     } catch (e) {
       res.status(500).json({ message: 'Something went wrong' })
     }
-  })
+  }
+)
+
+router.post('/upload', upload.single('avatar'), (req, res) => {
+  // All good
+  res.status(200).json({ message: 'Загрузка фотографии успешно завершена' });
+})
 
 router.post(
   '/login',
@@ -72,7 +104,7 @@ router.post(
       const token = jwt.sign(
         { userId: user.id },
         config.get('jwtSecret'),
-        {expiresIn: '1h'}
+        { expiresIn: '1h' }
       )
 
       res.json({ token, userId: user.id })
@@ -80,6 +112,7 @@ router.post(
     } catch (e) {
       res.status(500).json({ message: 'Something went wrong' })
     }
-  })
+  }
+)
 
 module.exports = router
