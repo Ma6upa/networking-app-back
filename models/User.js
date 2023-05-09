@@ -18,6 +18,10 @@ const schema = new Schema({
     type: String,
     required: false
   },
+  firstName: {
+    type: String,
+    required: false
+  },
   lastName: {
     type: String,
     required: false
