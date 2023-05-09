@@ -9,12 +9,15 @@ const path = require('path')
 const multer = require('multer')
 
 let fileName;
+let fileExt;
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'images')
   },
   filename: (req, file, cb) => {
+    fileName = Date.now()
+    fileExt = path.extname(file.originalname)
     cb(null, fileName + path.extname(file.originalname))
   }
 })
@@ -46,11 +49,10 @@ router.post(
       }
 
       const hashedPassword = await bcrypt.hash(password, 12)
-      fileName = Date.now()
       const user = new User({ 
         email, 
         password: hashedPassword,
-        pathToUserpic: fileName,
+        pathToUserpic: `${fileName}${fileExt}`,
         firstName,
         lastName,
         birthDate,
