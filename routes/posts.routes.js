@@ -1,8 +1,8 @@
 const { Router } = require('express')
-const Post = require('../models/User')
 const router = Router()
 const path = require('path')
 const multer = require('multer')
+const Post = require('../models/Post')
 
 let fileName;
 let fileExt;
@@ -31,13 +31,13 @@ router.post(
           id: author.id,
           name: author.name,
         }, 
-        postPathToImg: `${fileName}${fileExt}`,
-
+        postPathToImg: fileName? `${fileName}${fileExt}` : null,
       })
       await post.save()
 
-      res.status(201).json({ message: 'Пост создан' })
+      res.status(201).json({ message: 'Пост успешно создан' })
     } catch (e) {
+      console.log(e)
       res.status(500).json({ message: 'Something went wrong' })
     }
   }
