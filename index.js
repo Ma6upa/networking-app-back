@@ -1,6 +1,17 @@
 const express = require('express')
 const config = require('config')
 const mongoose = require('mongoose')
+const cors = require('cors')
+
+app.use(
+  cors({
+    allowedHeaders: ["authorization", "Content-Type"], // you can change the headers
+    exposedHeaders: ["authorization"], // you can change the headers
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false
+  })
+)
 
 const app = express()
 const PORT = config.get('port')
