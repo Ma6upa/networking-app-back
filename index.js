@@ -3,6 +3,9 @@ const config = require('config')
 const mongoose = require('mongoose')
 const cors = require('cors')
 
+const app = express()
+const PORT = config.get('port')
+
 app.use(
   cors({
     allowedHeaders: ["authorization", "Content-Type"], // you can change the headers
@@ -12,9 +15,6 @@ app.use(
     preflightContinue: false
   })
 )
-
-const app = express()
-const PORT = config.get('port')
 
 app.use(express.json({ extended: true }))
 app.use('/api/auth', require('./routes/auth.routes'))
