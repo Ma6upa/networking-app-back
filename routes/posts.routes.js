@@ -43,6 +43,20 @@ router.post(
   }
 )
 
+router.get(
+  '/getPosts',
+  async (req, res) => {
+    try {
+      const userId = req.query.userId;
+      const posts = await Post.find({ 'author.id': userId })
+      res.json(posts)
+    } catch (e) {
+      console.log(e)
+      res.status(500).json({ message: 'Something went wrong' })
+    }
+  }
+)
+
 router.post('/uploadPostPic', upload.single('postPic'), (req, res) => {
   // All good
   res.status(200).json({ message: 'Загрузка фотографии успешно завершена' });
