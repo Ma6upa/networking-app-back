@@ -2,14 +2,17 @@ const express = require('express')
 const config = require('config')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const https = require("https")
+const fs = require('fs')
+const path = require('path')
 
 const app = express()
 const PORT = config.get('port')
 
 app.use(
   cors({
-    allowedHeaders: ["authorization", "Content-Type"], // you can change the headers
-    exposedHeaders: ["authorization"], // you can change the headers
+    allowedHeaders: ["authorization", "Content-Type"],
+    exposedHeaders: ["authorization"],
     origin: "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     preflightContinue: false
@@ -25,7 +28,11 @@ app.use(express.static(__dirname + '/images'));
 async function start() {
   try {
     await mongoose.connect(config.get('mongoUri'))
-    app.listen(PORT, () => console.log('app working on port', PORT))
+    const sslServer = https.createServer({
+      key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
+      cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'))
+    }, app)
+    sslServer.listen(PORT, () => console.log('app working on port', PORT))
   } catch (e) {
     console.log('Server Error', e.message)
     process.exit(1)
